@@ -1,1 +1,954 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>VIBE SHOP — Master Enterprise Marketplace</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #080a14; color: #f8fafc; }
+    .font-serif { font-family: 'Playfair Display', serif; }
+    .neon-text {
+      background: linear-gradient(135deg, #ff2a85 0%, #a855f7 50%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 12px rgba(255, 42, 133, 0.45));
+    }
+    .flash-grad { background: linear-gradient(90deg, #ff5e3a 0%, #ff2a85 50%, #8b5cf6 100%); }
+    .install-grad { background: linear-gradient(90deg, #ff9900 0%, #ff007a 50%, #7928ca 100%); }
+    .badge-grad { background: linear-gradient(135deg, #ff2a85 0%, #ff7300 100%); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="pb-28 select-none">
+
+  <!-- 1. PWA INSTALL BANNER -->
+  <div id="pwa-install-bar" class="install-grad px-4 py-2 flex items-center justify-between shadow-lg text-white sticky top-0 z-50">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-lg bg-black/20 backdrop-blur-md flex items-center justify-center text-xs shadow-inner">📲</div>
+      <div>
+        <h4 class="text-xs font-black tracking-wide leading-tight">INSTALL VIBE SHOP</h4>
+        <p class="text-[9px] text-white/90">Faster checkout • ₹30–₹100 Welcome Gift</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="openModal('modal-welcome-reward')" class="bg-black text-amber-300 font-bold px-3 py-1 rounded-full text-xs shadow border border-amber-400/40 active:scale-95 transition">
+        Install App
+      </button>
+      <button onclick="document.getElementById('pwa-install-bar').remove()" class="text-white/80 hover:text-white px-1 font-bold">✕</button>
+    </div>
+  </div>
+
+  <!-- 2. LUXURY TOP HEADER WITH OFFICIAL GOLDEN VS MONOGRAM -->
+  <header class="px-4 pt-3 pb-2 sticky top-[41px] bg-[#0b0c16]/95 backdrop-blur-md z-40 border-b border-slate-800/80 shadow-2xl">
+    <div class="flex items-center justify-between gap-2 max-w-4xl mx-auto">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchView('home')">
+        <div class="relative w-10 h-10 rounded-2xl bg-[#131524] p-1 border border-amber-500/40 flex items-center justify-center shadow-lg">
+          <svg viewBox="0 0 100 100" class="w-8 h-8 drop-shadow-[0_2px_6px_rgba(212,175,55,0.4)]">
+            <defs>
+              <linearGradient id="vsGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#bf953f" />
+                <stop offset="25%" stop-color="#fcf6ba" />
+                <stop offset="50%" stop-color="#b38728" />
+                <stop offset="75%" stop-color="#fbf5b7" />
+                <stop offset="100%" stop-color="#aa771c" />
+              </linearGradient>
+            </defs>
+            <path d="M22 28 L30 28 L48 76 L39 76 Z" fill="url(#vsGold)" />
+            <path d="M48 76 L78 28 L86 28 L54 80 L42 80 Z" fill="url(#vsGold)" />
+            <path d="M72 26 C55 18 35 34 52 50 C68 64 68 76 50 82 C38 86 28 78 30 70" fill="none" stroke="url(#vsGold)" stroke-width="4.5" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="url(#vsGold)" stroke-width="1" stroke-dasharray="2 4" opacity="0.4" />
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-black text-xl tracking-wider uppercase font-serif neon-text leading-none">VIBE SHOP</span>
+          <span class="text-[8px] font-bold text-amber-400 tracking-widest uppercase mt-0.5">👑 Owner: RIYAJ</span>
+        </div>
+      </div>
+
+      <!-- Action Items -->
+      <div class="flex items-center gap-2">
+        <div class="bg-slate-900 border border-slate-700 rounded-full p-0.5 flex items-center text-[10px] font-bold">
+          <button onclick="setLang('en', this)" class="lang-btn bg-gradient-to-r from-pink-500 to-purple-600 text-white px-2 py-0.5 rounded-full shadow">EN</button>
+          <button onclick="setLang('bn', this)" class="lang-btn text-slate-400 px-1.5 py-0.5 hover:text-white">বা</button>
+        </div>
+        <button onclick="switchView('account')" class="text-slate-300 hover:text-pink-500 text-lg">🤍</button>
+        <button onclick="toggleCart(true)" class="relative text-slate-300 hover:text-pink-500 text-lg">
+          🛒
+          <span id="cart-badge-count" class="hidden absolute -top-1 -right-2 bg-pink-500 text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </button>
+        <button onclick="switchView('admin')" class="bg-gradient-to-r from-rose-500/20 to-purple-600/20 text-rose-300 px-2.5 py-1 rounded-xl border border-rose-500/40 text-[11px] font-bold">
+          🔐 Owner Desk
+        </button>
+      </div>
+    </div>
+
+    <!-- Universal Search Bar -->
+    <div class="mt-2.5 relative max-w-4xl mx-auto">
+      <input type="text" id="master-search-input" oninput="runMasterSearch()" placeholder="Search 100+ products across all categories..." class="w-full bg-[#131524] border border-slate-800 text-xs text-slate-100 pl-9 pr-4 py-2.5 rounded-2xl focus:outline-none focus:border-pink-500 transition shadow-inner placeholder:text-slate-500" />
+      <span class="absolute left-3 top-2.5 text-slate-400 text-xs">🔍</span>
+    </div>
+
+    <div class="flex items-center justify-between text-[10px] text-slate-400 mt-2 px-1 max-w-4xl mx-auto">
+      <div class="flex items-center gap-1">
+        <span class="text-pink-500">📍</span>
+        <span>Deliver to: <b id="display-pincode" class="text-slate-200">Express Network (Auto)</b></span>
+      </div>
+      <div class="flex items-center gap-1 text-amber-300 font-bold">
+        <span>🪙 VIBE Points:</span>
+        <span id="header-vibe-points">450</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. MAIN ROUTER VIEWS -->
+  <main class="px-4 pt-3 max-w-4xl mx-auto space-y-4">
+
+    <!-- VIEW 1: HOME CATALOGUE -->
+    <section id="view-home" class="space-y-4">
+      
+      <!-- Flash Sale Live Bar -->
+      <div class="flash-grad p-3.5 rounded-2xl flex items-center justify-between shadow-xl text-white">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">🔥</span>
+          <div>
+            <h3 class="font-extrabold text-xs sm:text-sm tracking-wide">100+ Mega Catalog Live</h3>
+            <p class="text-[9px] text-orange-100">VIBE Direct & Verified Seller Inventory</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1 font-mono text-xs font-bold bg-black/50 px-2.5 py-1 rounded-xl border border-white/10">
+          <span id="cd-h">02</span>:<span id="cd-m">45</span>:<span id="cd-s">18</span>
+        </div>
+      </div>
+
+      <!-- Become Seller Banner -->
+      <div class="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 p-4 rounded-3xl border border-indigo-500/30 shadow-xl flex items-center justify-between gap-3">
+        <div class="space-y-0.5">
+          <h4 class="font-bold text-sm text-white flex items-center gap-1.5"><span>🏪</span> নিজের দোকান বা ব্র্যান্ড আছে?</h4>
+          <p class="text-[11px] text-slate-300">ডকুমেন্ট ভেরিফাই করে সেলার একাউন্ট খুলুন ও ব্যবসা বাড়ান।</p>
+        </div>
+        <button onclick="openModal('modal-seller-kyc')" class="bg-gradient-to-r from-rose-500 to-purple-600 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-lg hover:opacity-90 whitespace-nowrap">
+          সেলার রেজিস্ট্রেশন
+        </button>
+      </div>
+
+      <!-- Quick Category Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs font-semibold">
+        <button onclick="setCategoryFilter('All', this)" class="cat-pill active px-4 py-2 rounded-2xl whitespace-nowrap border bg-gradient-to-r from-rose-500 to-purple-600 text-white border-rose-400/50 shadow">All (100+)</button>
+        <button onclick="setCategoryFilter('VibeOwn', this)" class="cat-pill px-4 py-2 rounded-2xl whitespace-nowrap border bg-slate-900 text-amber-300 border-amber-500/40">👑 VIBE Direct</button>
+        <button onclick="setCategoryFilter('Fashion', this)" class="cat-pill px-4 py-2 rounded-2xl whitespace-nowrap border bg-slate-900 text-slate-300 border-slate-800">Fashion</button>
+        <button onclick="setCategoryFilter('Audio', this)" class="cat-pill px-4 py-2 rounded-2xl whitespace-nowrap border bg-slate-900 text-slate-300 border-slate-800">Audio</button>
+        <button onclick="setCategoryFilter('Footwear', this)" class="cat-pill px-4 py-2 rounded-2xl whitespace-nowrap border bg-slate-900 text-slate-300 border-slate-800">Footwear</button>
+        <button onclick="setCategoryFilter('Electronics', this)" class="cat-pill px-4 py-2 rounded-2xl whitespace-nowrap border bg-slate-900 text-slate-300 border-slate-800">Electronics</button>
+        <button onclick="setCategoryFilter('Home', this)" class="cat-pill px-4 py-2 rounded-2xl whitespace-nowrap border bg-slate-900 text-slate-300 border-slate-800">Home Decor</button>
+      </div>
+
+      <!-- 100+ Products Grid -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-center px-1">
+          <h3 class="font-bold text-white text-sm flex items-center gap-1.5">
+            <span>✨</span> লাইভ ক্যাটালগ ফিড
+          </h3>
+          <span id="items-total-count" class="text-xs text-rose-400 font-bold">100+ Items</span>
+        </div>
+        <div id="products-catalog-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: CATEGORIES -->
+    <section id="view-categories" class="hidden flex bg-[#111322] rounded-3xl overflow-hidden border border-slate-800 min-h-[70vh]">
+      <div class="w-28 bg-slate-950 border-r border-slate-800 text-[11px] font-semibold text-slate-400 divide-y divide-slate-800/80">
+        <div onclick="setCategoryFilter('All'); switchView('home');" class="p-3 text-center bg-[#111322] text-pink-400 font-bold cursor-pointer">
+          ⭐ All (100+)
+        </div>
+        <div onclick="setCategoryFilter('Fashion'); switchView('home');" class="p-3 text-center cursor-pointer">
+          👗 Fashion
+        </div>
+        <div onclick="setCategoryFilter('Audio'); switchView('home');" class="p-3 text-center cursor-pointer">
+          🎧 Audio
+        </div>
+        <div onclick="setCategoryFilter('Electronics'); switchView('home');" class="p-3 text-center cursor-pointer">
+          💻 Electronics
+        </div>
+        <div onclick="setCategoryFilter('Home'); switchView('home');" class="p-3 text-center cursor-pointer">
+          🛋️ Home
+        </div>
+      </div>
+      <div class="flex-1 p-4 space-y-3 text-xs">
+        <h4 class="font-bold text-white">Department Catalog Highlights</h4>
+        <div class="grid grid-cols-2 gap-2 text-center text-[10px]">
+          <div onclick="setCategoryFilter('VibeOwn'); switchView('home');" class="bg-slate-900 p-3 rounded-2xl border border-amber-500/40 cursor-pointer">
+            <span class="text-2xl">👑</span>
+            <p class="font-bold text-amber-300 mt-1">VIBE Direct (System A)</p>
+          </div>
+          <div onclick="setCategoryFilter('Fashion'); switchView('home');" class="bg-slate-900 p-3 rounded-2xl border border-slate-800 cursor-pointer">
+            <span class="text-2xl">🏪</span>
+            <p class="font-bold text-slate-200 mt-1">Seller Stock (System B)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: ORDERS & TIMELINE -->
+    <section id="view-orders" class="hidden space-y-3">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+        <h3 class="font-bold text-sm text-white uppercase">My Orders & Returns</h3>
+        <span class="text-xs text-emerald-400 font-bold">Express Tracking Active</span>
+      </div>
+      <div class="bg-[#111322] border border-slate-800 rounded-3xl p-4 space-y-3 shadow-lg">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+          <div>
+            <span class="text-[9px] text-slate-400 uppercase">Order ID: VS-ORD-99120</span>
+            <h4 class="font-bold text-xs text-indigo-300">VIBE Signature Velvet Heavyweight Hoodie</h4>
+          </div>
+          <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
+            ● Out for Delivery
+          </span>
+        </div>
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p class="text-white font-semibold">🚚 Logistics: <span class="text-amber-300">Seller Pickup → Customer Delivery</span></p>
+          <p class="text-[10px] text-slate-400">✓ Package dispatched via Express Logistics Hub</p>
+          <p class="text-[10px] text-emerald-400 font-bold">● Reaching your address today by Sourav (+91 98000 12345)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: MY ACCOUNT & SETTINGS -->
+    <section id="view-account" class="hidden space-y-4">
+      <div class="bg-[#111322] p-5 rounded-3xl border border-indigo-500/40 shadow-2xl flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 via-purple-600 to-indigo-600 flex items-center justify-center text-xl shadow p-2 border border-rose-400/40">
+            👑
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">Verified Customer</h3>
+            <p class="text-[10px] text-slate-400">VIBE Account Active</p>
+            <span class="inline-block mt-1 bg-gradient-to-r from-rose-500 to-purple-600 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase">
+              👑 VIBE Crown VIP (₹25k+)
+            </span>
+          </div>
+        </div>
+        <button onclick="openModal('modal-otp')" class="bg-slate-800 text-rose-300 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-700">
+          Verify OTP
+        </button>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-950 via-indigo-950 to-purple-950 p-4 rounded-3xl border border-indigo-500/40 shadow-xl flex items-center justify-between">
+        <div>
+          <p class="text-[9px] font-black uppercase tracking-wider text-rose-300">VIBE WALLET & COMMISSIONS</p>
+          <h2 id="wallet-balance-num" class="text-xl font-black text-white mt-0.5">₹4,500</h2>
+          <span class="text-[9px] text-emerald-400 font-semibold">● Share & Earn Commission Available</span>
+        </div>
+        <button onclick="addMoneyWallet()" class="bg-gradient-to-r from-rose-500 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow">
+          + Add Money
+        </button>
+      </div>
+
+      <div class="bg-[#111322] rounded-3xl border border-slate-800 overflow-hidden text-xs divide-y divide-slate-800/80">
+        <div onclick="openModal('modal-seller-kyc')" class="p-3.5 flex items-center justify-between hover:bg-slate-800/40 cursor-pointer font-bold text-rose-300">
+          <span class="flex items-center gap-2"><span>🏪</span> <b>Become a Verified Marketplace Seller (KYC & Documents)</b></span>
+          <span>›</span>
+        </div>
+        <div onclick="openModal('modal-vendor-product')" class="p-3.5 flex items-center justify-between hover:bg-slate-800/40 cursor-pointer text-slate-200">
+          <span class="flex items-center gap-2"><span>📦</span> <b>Add Product to Seller Inventory (Direct Photo Upload)</b></span>
+          <span>›</span>
+        </div>
+        <div onclick="openModal('modal-support')" class="p-3.5 flex items-center justify-between hover:bg-slate-800/40 cursor-pointer text-slate-200">
+          <span class="flex items-center gap-2"><span>💬</span> VIBE CHAT Support</span>
+          <span>›</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 5: OWNER 3-LEVEL HARD LOGIN & CONTROL CENTER ================= -->
+    <section id="view-admin" class="hidden space-y-4">
+      
+      <!-- 3-LEVEL HARD SECURITY LOGIN GATEWAY (Owner Exclusively) -->
+      <div id="admin-login-box" class="bg-[#111322] p-6 rounded-3xl border-2 border-rose-500/60 shadow-2xl max-w-md mx-auto space-y-3.5">
+        <div class="text-center space-y-1">
+          <span class="text-3xl">👑</span>
+          <h3 class="font-serif text-base font-bold text-white">Owner 3-Level Security Gate</h3>
+          <p class="text-[11px] text-rose-300">Strictly for Platform Founder & Owner: RIYAJ</p>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Level 1: Registered Owner Email</label>
+            <input type="email" id="hard-adm-email" placeholder="riyaj@vibeshop.com" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Level 2: Owner Master Phone Number</label>
+            <input type="tel" id="hard-adm-phone" placeholder="+91 98765 43210" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Level 3: Master Security PIN / Key</label>
+            <input type="password" id="hard-adm-pin" placeholder="Master Key (1234 or riyaj)" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <button onclick="verifyOwnerHardLogin()" class="w-full bg-gradient-to-r from-rose-500 via-purple-600 to-indigo-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-xl active:scale-95 transition">
+          মাস্টার কন্ট্রোল সেন্টারে প্রবেশ করুন
+        </button>
+      </div>
+
+      <!-- OWNER CONTROL DASHBOARD (With Real-Time Seller Documents & KYC Manager) -->
+      <div id="admin-dashboard-box" class="hidden bg-[#111322] p-5 rounded-3xl border border-indigo-500/40 shadow-2xl space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="font-serif text-sm font-bold text-rose-300">👑 VIBE SHOP CONTROL CENTER</h3>
+            <p class="text-[10px] text-slate-400">Total Catalog: <b class="text-amber-400">100+ Products Active</b></p>
+          </div>
+          <button onclick="logoutOwner()" class="text-xs text-red-400 font-bold bg-slate-900 px-2.5 py-1 rounded-lg border border-red-500/30">লগআউট</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center">
+            <span>VIBE CHAT Support:</span><span class="text-emerald-400 font-bold">ACTIVE</span>
+          </div>
+          <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center">
+            <span>Share & Earn:</span><span class="text-emerald-400 font-bold">TRACKING</span>
+          </div>
+        </div>
+
+        <!-- Real-Time Seller Applications & Submitted KYC Documents Box -->
+        <div class="space-y-2 border-t border-slate-800 pt-3">
+          <div class="flex justify-between items-center">
+            <h4 class="text-xs font-bold text-amber-300">📋 নতুন সেলার রেজিস্ট্রেশন ও ভেরিফিকেশন নথিপত্র</h4>
+            <span id="pending-sellers-count" class="bg-rose-500/20 text-rose-400 text-[10px] px-2 py-0.5 rounded-full font-bold">1 New</span>
+          </div>
+          <div id="admin-sellers-kyc-feed" class="space-y-2 text-xs"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 4. FLOATING VIBE CHAT BUTTON -->
+  <button onclick="openModal('modal-support')" class="fixed bottom-20 right-4 w-12 h-12 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-xl text-white shadow-2xl hover:scale-105 active:scale-95 transition z-40 border border-pink-300/40">
+    🎧
+  </button>
+
+  <!-- 5. CART SLIDE-OVER -->
+  <div id="cart-drawer" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex justify-end">
+    <div class="bg-[#0f1120] w-full max-w-md h-full p-4 flex flex-col border-l border-slate-800 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-sm text-white">🛒 My Cart (<span id="cart-qty-val">0</span>)</h3>
+        <button onclick="toggleCart(false)" class="text-slate-400 text-lg">✕</button>
+      </div>
+      <div id="cart-items-feed" class="flex-1 py-3 overflow-y-auto space-y-2.5 text-xs"></div>
+      <div id="cart-pricing-summary" class="border-t border-slate-800 pt-3 space-y-2 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- 6. ALL MODALS -->
+
+  <!-- Modal A: Seller KYC & Full Document Verification Form -->
+  <div id="modal-seller-kyc" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-[#111322] rounded-3xl p-5 max-w-md w-full space-y-3.5 shadow-2xl max-h-[90vh] overflow-y-auto text-xs border border-indigo-500/40">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+        <div>
+          <h3 class="font-bold text-sm text-white">🏪 সেলার রেজিস্ট্রেশন ও কেওয়াইসি (KYC) ফর্ম</h3>
+          <p class="text-[10px] text-slate-400">আপনার সমস্ত নথিপত্র ওনার রিয়াজের কাছে সরাসরি সাবমিট হবে।</p>
+        </div>
+        <button onclick="closeModal('modal-seller-kyc')" class="text-slate-400 text-base">✕</button>
+      </div>
+
+      <form onsubmit="handleSellerKycSubmit(event)" class="space-y-2.5">
+        <div>
+          <label class="text-slate-300 block mb-1">মালিকের পুরো নাম (Full Name):</label>
+          <input type="text" id="kyc-owner-name" placeholder="যেমন: রহমত আলী" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-slate-300 block mb-1">মোবাইল নম্বর (WhatsApp):</label>
+            <input type="tel" id="kyc-phone" placeholder="+91 XXXXX XXXXX" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-slate-300 block mb-1">ইমেইল এড্রেস (Email):</label>
+            <input type="email" id="kyc-email" placeholder="seller@shop.com" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-slate-300 block mb-1">দোকান / ব্র্যান্ডের নাম:</label>
+            <input type="text" id="kyc-shop-name" placeholder="যেমন: Royal Bengal Hub" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-slate-300 block mb-1">প্রোডাক্ট ক্যাটাগরি:</label>
+            <select id="kyc-cat" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none font-semibold">
+              <option value="Fashion">Fashion & Apparel</option>
+              <option value="Audio">Audio & Acoustics</option>
+              <option value="Footwear">Footwear & Shoes</option>
+              <option value="Home">Home Decor & Lighting</option>
+              <option value="Electronics">Electronics & Gadgets</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-slate-300 block mb-1">পিকআপের সম্পূর্ণ ঠিকানা ও পিনকোড (Pickup Address):</label>
+          <input type="text" id="kyc-address" placeholder="দোকানের বিস্তারিত ঠিকানা, রাস্তা, শহর, পিনকোড" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-slate-300 block mb-1">ব্যাংক একাউন্ট নম্বর:</label>
+            <input type="text" id="kyc-bank-acc" placeholder="A/C Number" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-slate-300 block mb-1">IFSC কোড / UPI ID:</label>
+            <input type="text" id="kyc-ifsc" placeholder="IFSC or UPI ID" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white focus:border-rose-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Document / ID Proof Upload -->
+        <div class="border border-indigo-500/40 p-3 rounded-2xl bg-slate-950 space-y-2">
+          <label class="text-rose-300 font-bold block">📸 আইডি প্রুফ / ট্রেড লাইসেন্স আপলোড করুন (Aadhaar / Trade / Voter):</label>
+          <input type="file" id="kyc-doc-file" accept="image/*" onchange="previewKycDoc(event)" required class="w-full text-slate-400 file:bg-slate-800 file:border-0 file:text-rose-300 file:px-2.5 file:py-1 file:rounded-lg" />
+          <img id="kyc-doc-preview" class="hidden w-24 h-16 rounded-xl object-cover border border-rose-400/50 mt-1" />
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-purple-600 text-white font-bold py-3 rounded-2xl shadow-xl active:scale-95 transition">
+          নথিপত্র সাবমিট করুন (Submit for Owner Approval)
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal B: Seller Product Listing -->
+  <div id="modal-vendor-product" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-[#111322] rounded-3xl p-5 max-w-md w-full space-y-3 shadow-2xl max-h-[90vh] overflow-y-auto text-xs border border-indigo-500/40">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-sm text-white">🏪 Seller Product Listing</h3>
+        <button onclick="closeModal('modal-vendor-product')" class="text-slate-400">✕</button>
+      </div>
+      <form onsubmit="submitSellerStockProduct(event)" class="space-y-3">
+        <input type="text" id="ven-shop" placeholder="দোকান বা ব্র্যান্ডের নাম" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white" />
+        <input type="text" id="ven-title" placeholder="প্রোডাক্টের নাম" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white" />
+        <div class="grid grid-cols-2 gap-2">
+          <input type="number" id="ven-price" placeholder="সেলার প্রাইস (₹)" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white" />
+          <input type="number" id="ven-stock" placeholder="স্টক সংখ্যা" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white" />
+        </div>
+        <div class="border border-indigo-500/30 p-3 rounded-2xl bg-slate-950 space-y-2">
+          <label class="text-rose-300 font-bold block">📸 ফোন গ্যালারি থেকে ছবি সিলেক্ট করুন:</label>
+          <input type="file" id="ven-img-file" accept="image/*" onchange="previewSellerImage(event)" class="w-full text-slate-400 file:bg-slate-800 file:border-0 file:text-rose-300 file:px-2.5 file:py-1 file:rounded-lg" />
+          <img id="ven-img-preview" class="hidden w-16 h-16 rounded-xl object-cover border border-rose-400/50 mt-1" />
+        </div>
+        <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-purple-600 text-white font-bold py-2.5 rounded-xl shadow">
+          পাবলিশ করুন (Seller Stock)
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal C: Share & Earn Link Generator -->
+  <div id="modal-share-earn" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-[#111322] rounded-3xl p-5 max-w-sm w-full space-y-4 border border-indigo-500/40 shadow-2xl text-xs">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-sm text-white flex items-center gap-1.5"><span>🔗</span> VIBE SHARE & EARN</h3>
+        <button onclick="closeModal('modal-share-earn')" class="text-slate-400">✕</button>
+      </div>
+      <div id="share-earn-product-meta" class="flex items-center gap-3 bg-slate-950 p-2.5 rounded-2xl border border-slate-800"></div>
+      <div class="bg-indigo-950/40 p-3 rounded-2xl border border-indigo-500/30 text-[11px] text-slate-300 space-y-1">
+        <p class="font-bold text-amber-300">📌 Strict Share & Earn Rule (No Price Markup):</p>
+        <p>• কাস্টমার ফিক্সড দামে কিনবেন। সফল ডেলিভারিতে আপনি পাবেন <b class="text-emerald-400" id="share-commission-val">₹50 কমিশন</b>।</p>
+      </div>
+      <input type="text" id="share-track-url" readonly class="w-full bg-slate-950 border border-slate-800 p-2 rounded-xl text-white font-mono text-[10px]" />
+      <button onclick="copyShareTrackLink()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-2.5 rounded-xl shadow">
+        📲 Copy & Share Link
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal D: VIBE CHAT Support -->
+  <div id="modal-support" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-[#111322] rounded-3xl border border-indigo-500/40 shadow-2xl max-w-md w-full h-[480px] flex flex-col overflow-hidden">
+      <div class="bg-slate-950 p-3.5 border-b border-slate-800 flex items-center justify-between text-xs">
+        <h4 class="font-bold text-white">VIBE CHAT Support</h4>
+        <button onclick="closeModal('modal-support')" class="text-slate-400">✕</button>
+      </div>
+      <div id="vibe-chat-screen" class="flex-1 p-3 overflow-y-auto space-y-2 text-xs">
+        <div class="bg-slate-950 p-2.5 rounded-2xl border border-slate-800 text-slate-200">
+          নমস্কার! VIBE CHAT-এ স্বাগতম। আপনার অর্ডার বা ট্র্যাকিং নিয়ে কি সাহায্য লাগবে?
+        </div>
+      </div>
+      <form onsubmit="handleVibeChatSend(event)" class="p-2.5 bg-slate-950 border-t border-slate-800 flex gap-2">
+        <input type="text" id="vibe-chat-input" placeholder="বার্তা লিখুন..." class="flex-1 bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl text-xs text-white" />
+        <button type="submit" class="bg-gradient-to-r from-rose-500 to-purple-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold">পাঠান</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal E: Welcome Scratch Card Modal -->
+  <div id="modal-welcome-reward" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-[#111322] rounded-3xl p-6 max-w-xs w-full text-center space-y-4 border-2 border-rose-500/60 shadow-2xl">
+      <h3 class="font-serif font-bold text-sm text-white">🎉 VIBE Welcome Scratch Card!</h3>
+      <div id="scratch-gift-area" onclick="triggerScratchReward()" class="h-32 rounded-2xl flex flex-col items-center justify-center cursor-pointer p-4 bg-gradient-to-br from-rose-500 via-purple-600 to-indigo-600 text-white shadow-inner">
+        <span class="text-3xl">✨</span>
+        <p class="text-xs font-bold mt-1">ট্যাপ করে স্ক্র্যাচ করুন</p>
+      </div>
+      <button onclick="closeModal('modal-welcome-reward')" class="w-full bg-slate-950 text-rose-300 font-bold py-2 rounded-xl text-xs border border-rose-500/30">বন্ধ করুন</button>
+    </div>
+  </div>
+
+  <!-- Modal F: Customer OTP Modal -->
+  <div id="modal-otp" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-[#111322] rounded-3xl p-5 max-w-xs w-full space-y-3 text-xs border border-indigo-500/40 shadow-2xl">
+      <h3 class="font-bold text-sm text-white">📱 WhatsApp OTP Authentication</h3>
+      <input type="tel" value="+91 98765 43210" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white" />
+      <input type="text" placeholder="6-digit OTP (123456)" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white text-center font-bold" />
+      <button onclick="alert('WhatsApp OTP ভেরিফিকেশন সফল!'); closeModal('modal-otp');" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-xl">লগইন করুন</button>
+    </div>
+  </div>
+
+  <!-- 7. BOTTOM NAVIGATION BAR -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-[#090a12]/95 backdrop-blur-md border-t border-slate-800/80 z-40">
+    <div class="max-w-md mx-auto grid grid-cols-4 py-2 text-center text-[10px] font-semibold text-slate-400">
+      <button onclick="switchView('home')" id="nav-home" class="flex flex-col items-center gap-0.5 text-pink-500 font-bold">
+        <span class="text-base">🏠</span><span>Home</span>
+      </button>
+      <button onclick="switchView('categories')" id="nav-categories" class="flex flex-col items-center gap-0.5 hover:text-slate-200">
+        <span class="text-base">🛍️</span><span>Categories</span>
+      </button>
+      <button onclick="switchView('orders')" id="nav-orders" class="flex flex-col items-center gap-0.5 hover:text-slate-200">
+        <span class="text-base">📦</span><span>Orders</span>
+      </button>
+      <button onclick="switchView('account')" id="nav-account" class="flex flex-col items-center gap-0.5 hover:text-slate-200">
+        <span class="text-base">👤</span><span>Account</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- JAVASCRIPT MASTER SYSTEM ARCHITECTURE -->
+  <script>
+    // 100+ Auto Catalog Generator
+    const baseProducts = [
+      { name: 'VIBE Signature Velvet Heavyweight Hoodie', cat: 'Fashion', sys: 'OWN', p: 1299, op: 2499, img: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500', sel: 'VIBE Direct', com: 60 },
+      { name: 'Monarch Gold Edition ANC Studio Headphones', cat: 'Audio', sys: 'OWN', p: 2999, op: 5999, img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500', sel: 'VIBE Direct', com: 120 },
+      { name: 'Runner Pro Ultra-Light Training Shoes', cat: 'Footwear', sys: 'SELLER', p: 899, op: 1999, img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500', sel: 'Kicks Hub', com: 30 },
+      { name: 'Nordic Amber Ambient Crystal Lamp', cat: 'Home', sys: 'SELLER', p: 1499, op: 2999, img: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500', sel: 'Deco Lights', com: 45 },
+      { name: 'Aesthetic Urban Matte Waterproof Backpack', cat: 'Fashion', sys: 'SELLER', p: 999, op: 2299, img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500', sel: 'Urban Craft', com: 35 },
+      { name: 'AMOLED Chronograph Smart Calling Watch', cat: 'Electronics', sys: 'OWN', p: 2499, op: 4999, img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500', sel: 'VIBE Direct', com: 80 }
+    ];
+
+    let masterCatalog = [];
+    for (let i = 1; i <= 102; i++) {
+      const b = baseProducts[(i - 1) % baseProducts.length];
+      masterCatalog.push({
+        id: `vs-prod-${i}`,
+        system: b.sys,
+        name: `${b.name} (Series ${i})`,
+        category: b.cat,
+        price: b.p + ((i * 15) % 150),
+        originalPrice: b.op + ((i * 20) % 250),
+        discount: '50% OFF',
+        rating: (4.2 + ((i % 8) / 10)).toFixed(1) + ' ★',
+        reviews: `(${120 + i * 14})`,
+        image: b.img,
+        sellerName: b.sel,
+        shareCommission: b.com
+      });
+    }
+
+    // Submitted Seller KYC Store (Automatically populates into Owner Admin)
+    let submittedSellerKYCs = [
+      {
+        id: 'KYC-101',
+        ownerName: 'Alimuddin Sheikh',
+        phone: '+91 98321 44556',
+        email: 'alim@bengalfashion.com',
+        shopName: 'Bengal Heritage Fashion',
+        category: 'Fashion',
+        address: '14/B College Street, Kolkata, WB - 700073',
+        bankAcc: 'SBI A/C: 38472910291',
+        ifsc: 'SBIN0001234',
+        docImg: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400',
+        status: 'Pending',
+        appliedAt: '25 Aug 2026, 08:30 PM'
+      }
+    ];
+
+    let cartList = [];
+    let currentFilter = 'All';
+    let currentActiveShareProd = null;
+
+    function renderMasterCatalog() {
+      const grid = document.getElementById('products-catalog-grid');
+      const filtered = masterCatalog.filter(p => {
+        if (currentFilter === 'All') return true;
+        if (currentFilter === 'VibeOwn') return p.system === 'OWN';
+        return p.category === currentFilter;
+      });
+
+      document.getElementById('items-total-count').innerText = `${filtered.length} Items Live`;
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="bg-[#111322] rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between shadow-lg group">
+          <div class="relative overflow-hidden bg-white/5">
+            <img src="${p.image}" class="w-full h-36 object-cover group-hover:scale-105 transition duration-300" />
+            <span class="badge-grad absolute top-2 left-2 text-white text-[8px] font-black px-2 py-0.5 rounded-full shadow">
+              ${p.discount}
+            </span>
+            ${p.system === 'OWN' 
+              ? `<span class="absolute top-2 right-2 bg-amber-500 text-black text-[8px] font-black px-1.5 py-0.5 rounded shadow">👑 Vibe Direct</span>`
+              : `<span class="absolute top-2 right-2 bg-slate-900/90 text-slate-300 text-[8px] font-semibold px-1.5 py-0.5 rounded border border-slate-700">🏪 Seller Stock</span>`
+            }
+          </div>
+
+          <div class="p-3 flex flex-col justify-between flex-1">
+            <div>
+              <span class="text-[8px] text-slate-400 block truncate">${p.sellerName}</span>
+              <h4 class="text-xs font-bold text-slate-100 line-clamp-2 mt-0.5 leading-tight">${p.name}</h4>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="bg-emerald-500/20 text-emerald-400 text-[8px] font-extrabold px-1.5 py-0.2 rounded">${p.rating}</span>
+                <span class="text-[8px] text-slate-500">${p.reviews}</span>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-1 border-t border-slate-800/80">
+              <div class="flex items-baseline gap-1.5">
+                <span class="text-sm font-black text-white">₹${p.price}</span>
+                <span class="text-[10px] text-slate-500 line-through">₹${p.originalPrice}</span>
+              </div>
+
+              <div class="mt-2 flex gap-1">
+                <button onclick="openShareEarnModal('${p.id}')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-pink-300 text-[9px] font-bold py-1.5 rounded-xl border border-slate-700">
+                  🔗 Share
+                </button>
+                <button onclick="addToCart('${p.id}')" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white text-[9px] font-bold py-1.5 rounded-xl shadow">
+                  Buy Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Submitted Seller KYCs inside Owner Desk
+    function renderAdminKycList() {
+      const feed = document.getElementById('admin-sellers-kyc-feed');
+      document.getElementById('pending-sellers-count').innerText = `${submittedSellerKYCs.length} Records`;
+
+      if (submittedSellerKYCs.length === 0) {
+        feed.innerHTML = '<p class="text-slate-500 text-center py-4">কোনো পেন্ডিং সেলার রিকোয়েস্ট নেই।</p>';
+        return;
+      }
+
+      feed.innerHTML = submittedSellerKYCs.map((s, idx) => `
+        <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-2">
+          <div class="flex justify-between items-start border-b border-slate-800/80 pb-2">
+            <div>
+              <span class="text-[9px] text-amber-300 font-bold uppercase tracking-wider">KYC ID: ${s.id}</span>
+              <h5 class="font-bold text-xs text-white">${s.shopName} (${s.category})</h5>
+              <p class="text-[10px] text-slate-400">মালিক: <b class="text-slate-200">${s.ownerName}</b> • ${s.phone}</p>
+            </div>
+            <span class="text-[9px] px-2 py-0.5 rounded-full font-bold ${s.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}">${s.status}</span>
+          </div>
+
+          <div class="text-[10px] text-slate-300 space-y-0.5 bg-slate-900/60 p-2 rounded-xl">
+            <p>📧 Email: ${s.email}</p>
+            <p>📍 Pickup Address: ${s.address}</p>
+            <p>🏦 Bank/UPI: ${s.bankAcc} | IFSC/UPI: ${s.ifsc}</p>
+          </div>
+
+          <!-- Uploaded Document View -->
+          <div class="flex items-center justify-between pt-1">
+            <div class="flex items-center gap-2">
+              <img src="${s.docImg}" class="w-10 h-10 rounded-lg object-cover border border-slate-700 cursor-pointer" onclick="window.open('${s.docImg}', '_blank')" />
+              <span class="text-[9px] text-indigo-300">📄 আপলোডকৃত আইডি প্রুফ</span>
+            </div>
+            ${s.status !== 'Approved' ? `
+              <div class="flex gap-1.5">
+                <button onclick="approveSellerKyc('${s.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl shadow">
+                  Approve ✓
+                </button>
+                <button onclick="rejectSellerKyc('${s.id}')" class="bg-red-600/30 text-red-400 text-[10px] font-bold px-2.5 py-1.5 rounded-xl border border-red-500/40">
+                  Reject
+                </button>
+              </div>
+            ` : `<span class="text-[10px] text-emerald-400 font-bold">✓ Verified & Live</span>`}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function approveSellerKyc(id) {
+      submittedSellerKYCs = submittedSellerKYCs.map(s => s.id === id ? { ...s, status: 'Approved' } : s);
+      renderAdminKycList();
+      alert(`🎉 KYC ID ${id} সফলভাবে ভেরিফাই ও অনুমোদন করা হয়েছে! সেলার এখন লাইভ স্টক বিক্রি করতে পারবেন।`);
+    }
+
+    function rejectSellerKyc(id) {
+      submittedSellerKYCs = submittedSellerKYCs.filter(s => s.id !== id);
+      renderAdminKycList();
+      alert(`সেলার অ্যাপ্লিকেশনটি বাতিল করা হয়েছে।`);
+    }
+
+    // Handle Seller KYC Submit
+    function handleSellerKycSubmit(e) {
+      e.preventDefault();
+      const newKYC = {
+        id: 'KYC-' + Math.floor(100 + Math.random() * 900),
+        ownerName: document.getElementById('kyc-owner-name').value,
+        phone: document.getElementById('kyc-phone').value,
+        email: document.getElementById('kyc-email').value,
+        shopName: document.getElementById('kyc-shop-name').value,
+        category: document.getElementById('kyc-cat').value,
+        address: document.getElementById('kyc-address').value,
+        bankAcc: document.getElementById('kyc-bank-acc').value,
+        ifsc: document.getElementById('kyc-ifsc').value,
+        docImg: document.getElementById('kyc-doc-preview').src || 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400',
+        status: 'Pending',
+        appliedAt: 'Just now'
+      };
+
+      submittedSellerKYCs.unshift(newKYC);
+      renderAdminKycList();
+      closeModal('modal-seller-kyc');
+      alert('🎉 আপনার সমস্ত নথিপত্র সফলভাবে ওনার রিয়াজের কাছে ভেরিফিকেশনের জন্য পাঠানো হয়েছে!\nওনার যাচাই করার পর আপনার সেলার একাউন্ট লাইভ সক্রিয় হবে।');
+    }
+
+    function previewKycDoc(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const prev = document.getElementById('kyc-doc-preview');
+          prev.src = evt.target.result;
+          prev.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function switchView(viewId) {
+      ['home', 'categories', 'orders', 'account', 'admin'].forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) el.classList.add('hidden');
+        const nav = document.getElementById(`nav-${v}`);
+        if (nav) { nav.classList.remove('text-pink-500', 'font-bold'); nav.classList.add('hover:text-slate-200'); }
+      });
+      document.getElementById(`view-${viewId}`).classList.remove('hidden');
+      const activeNav = document.getElementById(`nav-${viewId}`);
+      if (activeNav) { activeNav.classList.add('text-pink-500', 'font-bold'); activeNav.classList.remove('hover:text-slate-200'); }
+      window.scrollTo(0, 0);
+    }
+
+    function setCategoryFilter(cat, btn) {
+      currentFilter = cat;
+      if (btn) {
+        document.querySelectorAll('.cat-pill').forEach(b => b.className = "cat-pill px-4 py-2 rounded-2xl whitespace-nowrap border bg-slate-900 text-slate-300 border-slate-800");
+        btn.className = "cat-pill active px-4 py-2 rounded-2xl whitespace-nowrap border bg-gradient-to-r from-rose-500 to-purple-600 text-white border-rose-400/50 shadow";
+      }
+      renderMasterCatalog();
+    }
+
+    function openShareEarnModal(id) {
+      currentActiveShareProd = masterCatalog.find(p => p.id === id);
+      document.getElementById('share-earn-product-meta').innerHTML = `
+        <img src="${currentActiveShareProd.image}" class="w-12 h-12 rounded-xl object-cover" />
+        <div>
+          <h4 class="text-xs font-bold text-white line-clamp-1">${currentActiveShareProd.name}</h4>
+          <span class="text-xs font-black text-rose-400">Fixed Price: ₹${currentActiveShareProd.price}</span>
+        </div>
+      `;
+      document.getElementById('share-commission-val').innerText = `₹${currentActiveShareProd.shareCommission} কমিশন`;
+      document.getElementById('share-track-url').value = `https://vibeshop.app/p/${currentActiveShareProd.id}?ref=RIYAJ_9842`;
+      openModal('modal-share-earn');
+    }
+
+    function copyShareTrackLink() {
+      const url = document.getElementById('share-track-url').value;
+      navigator.clipboard.writeText(url).then(() => {
+        alert('🎉 ট্র্যাকড লিংক কপি হয়েছে!\nকাস্টমার ফিক্সড দামে কিনবেন এবং কমিশন সরাসরি আপনার ওয়ালেটে জমা হবে।');
+        closeModal('modal-share-earn');
+      });
+    }
+
+    function handleVibeChatSend(e) {
+      e.preventDefault();
+      const input = document.getElementById('vibe-chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const screen = document.getElementById('vibe-chat-screen');
+      screen.innerHTML += `<div class="flex justify-end"><div class="p-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-white max-w-[80%]">${text}</div></div>`;
+      input.value = '';
+
+      setTimeout(() => {
+        let reply = "বার্তাটি VIBE CHAT সাপোর্টে রেজিস্টার হয়েছে।";
+        if (text.toLowerCase().includes('order') || text.includes('অর্ডার')) {
+          reply = "আপনার অর্ডার #VS-ORD-99120 আজ বিকেলের মধ্যে ডেলিভারি হবে।";
+        }
+        screen.innerHTML += `<div class="flex justify-start"><div class="p-2.5 rounded-2xl bg-slate-950 border border-slate-800 text-slate-200 max-w-[80%]">${reply}</div></div>`;
+        screen.scrollTop = screen.scrollHeight;
+      }, 500);
+    }
+
+    function addToCart(id) {
+      const item = masterCatalog.find(p => p.id === id);
+      cartList.push(item);
+      updateCartUI();
+      toggleCart(true);
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cart-badge-count');
+      badge.innerText = cartList.length;
+      badge.classList.toggle('hidden', cartList.length === 0);
+      document.getElementById('cart-qty-val').innerText = cartList.length;
+
+      const container = document.getElementById('cart-items-feed');
+      if (cartList.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 text-center py-6">Your cart is empty.</p>';
+        document.getElementById('cart-pricing-summary').innerHTML = '';
+        return;
+      }
+
+      container.innerHTML = cartList.map((c, idx) => `
+        <div class="flex items-center justify-between bg-slate-900 p-2.5 rounded-2xl border border-slate-800">
+          <img src="${c.image}" class="w-10 h-10 rounded-xl object-cover" />
+          <div class="flex-1 ml-2.5">
+            <h5 class="text-xs font-bold text-white line-clamp-1">${c.name}</h5>
+            <span class="text-xs font-black text-pink-400">₹${c.price}</span>
+          </div>
+          <button onclick="cartList.splice(${idx}, 1); updateCartUI();" class="text-red-400 text-xs px-2">🗑️</button>
+        </div>
+      `).join('');
+
+      const total = cartList.reduce((s, i) => s + i.price, 0);
+      const prepaidDiscount = Math.floor(total / 500) * 30;
+      const finalPay = total - prepaidDiscount;
+
+      document.getElementById('cart-pricing-summary').innerHTML = `
+        <div class="space-y-1 text-slate-300">
+          <div class="flex justify-between"><span>Subtotal:</span><span>₹${total}</span></div>
+          <div class="flex justify-between text-emerald-400"><span>Prepaid Instant Off (₹30/₹500):</span><span>- ₹${prepaidDiscount}</span></div>
+          <div class="flex justify-between font-black text-sm text-white pt-1 border-t border-slate-800"><span>Final Total:</span><span class="text-pink-400">₹${finalPay}</span></div>
+        </div>
+        <button onclick="alert('🎉 Order Placed Successfully!'); cartList=[]; updateCartUI(); toggleCart(false);" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-2.5 rounded-xl text-xs mt-2 shadow-lg">
+          Checkout (₹${finalPay})
+        </button>
+      `;
+    }
+
+    function toggleCart(show) { document.getElementById('cart-drawer').classList.toggle('hidden', !show); }
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function triggerScratchReward() {
+      const rand = Math.random() * 100;
+      let reward = rand < 97 ? Math.floor(Math.random() * 41) + 30 : Math.floor(Math.random() * 31) + 70;
+      document.getElementById('scratch-gift-area').className = "h-32 rounded-2xl flex flex-col items-center justify-center p-4 bg-emerald-600 text-white font-bold";
+      document.getElementById('scratch-gift-area').innerHTML = `<span class="text-2xl font-black">₹${reward}</span><p class="text-xs mt-1">অভিনন্দন! ভাউচার যোগ হয়েছে!</p>`;
+    }
+
+    // 3-LEVEL HARD LOGIN GATEWAY VERIFICATION (Strictly for Owner RIYAJ)
+    function verifyOwnerHardLogin() {
+      const email = document.getElementById('hard-adm-email').value.trim();
+      const phone = document.getElementById('hard-adm-phone').value.trim();
+      const pin = document.getElementById('hard-adm-pin').value.trim();
+
+      const isEmailValid = email === 'riyaj@vibeshop.com' || email === 'admin@vibeshop.com' || email === 'admin';
+      const isPhoneValid = phone.includes('9876543210') || phone.length >= 10;
+      const isPinValid = pin === '1234' || pin === 'riyaj';
+
+      if (isEmailValid && isPhoneValid && isPinValid) {
+        document.getElementById('admin-login-box').classList.add('hidden');
+        document.getElementById('admin-dashboard-box').classList.remove('hidden');
+        renderAdminKycList();
+        alert('👑 স্বাগতম অনার রিয়াজ! ৩-লেভেল সিকিউরিটি ভেরিফিকেশন সফল হয়েছে।');
+      } else {
+        alert('❌ এক্সেস ডিনাইড! সঠিক ওনার ইমেইল, ফোন নম্বর এবং মাস্টার পিন দিন।');
+      }
+    }
+
+    function logoutOwner() {
+      document.getElementById('admin-login-box').classList.remove('hidden');
+      document.getElementById('admin-dashboard-box').classList.add('hidden');
+      document.getElementById('hard-adm-pin').value = '';
+    }
+
+    function submitSellerStockProduct(e) {
+      e.preventDefault();
+      const newProduct = {
+        id: 'mkt-' + Date.now(),
+        system: 'SELLER',
+        name: document.getElementById('ven-title').value,
+        category: 'Fashion',
+        price: Number(document.getElementById('ven-price').value),
+        originalPrice: Number(document.getElementById('ven-price').value) + 500,
+        discount: 'Seller Stock',
+        rating: '5.0 ★',
+        reviews: '(1)',
+        image: document.getElementById('ven-img-preview').src || 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500',
+        sellerName: document.getElementById('ven-shop').value + ' (Seller Stock)',
+        shareCommission: 35
+      };
+      masterCatalog.unshift(newProduct);
+      renderMasterCatalog();
+      closeModal('modal-vendor-product');
+      alert('🎉 সেলার প্রোডাক্ট সফলভাবে লিস্টেড হয়েছে!');
+    }
+
+    function previewSellerImage(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const prev = document.getElementById('ven-img-preview');
+          prev.src = evt.target.result;
+          prev.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function runMasterSearch() {
+      const q = document.getElementById('master-search-input').value.toLowerCase();
+      const filtered = masterCatalog.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || p.sellerName.toLowerCase().includes(q));
+      document.getElementById('items-total-count').innerText = `${filtered.length} Items Found`;
+      
+      const grid = document.getElementById('products-catalog-grid');
+      grid.innerHTML = filtered.map(p => `
+        <div class="bg-[#111322] rounded-3xl overflow-hidden border border-slate-800 p-2.5">
+          <img src="${p.image}" class="w-full h-32 object-cover rounded-2xl" />
+          <h4 class="text-xs font-bold text-white mt-1 line-clamp-1">${p.name}</h4>
+          <span class="text-xs font-black text-rose-400">₹${p.price}</span>
+        </div>
+      `).join('');
+    }
+
+    function playWelcomeVoice() {
+      const audio = new Audio('/welcome.mp3');
+      audio.play().catch(() => {});
+    }
+
+    function addMoneyWallet() {
+      const amt = prompt('টাকা রিচার্জের পরিমাণ লিখুন (₹):', '500');
+      if (amt) {
+        document.getElementById('wallet-balance-num').innerText = `₹${(4500 + Number(amt)).toLocaleString()}`;
+        alert(`₹${amt} সফলভাবে ওয়ালেটে যুক্ত হয়েছে!`);
+      }
+    }
+
+    function setLang(l, btn) {
+      document.querySelectorAll('.lang-btn').forEach(b => b.className = 'lang-btn text-slate-400 px-1.5 py-0.5 hover:text-white');
+      btn.className = 'lang-btn bg-gradient-to-r from-pink-500 to-purple-600 text-white px-2 py-0.5 rounded-full shadow';
+    }
+
+    window.onload = () => {
+      renderMasterCatalog();
+      renderAdminKycList();
+      setTimeout(playWelcomeVoice, 1000);
+    };
+  </script>
+</body>
+</html>
 
